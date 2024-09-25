@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using WebshopAPI.Models;
 
@@ -28,8 +29,19 @@ namespace WebshopAPI.Controllers
             Users.Add(aNewUser);
             // registration okay
             return Ok("User registered successfully.");
-
         }
+        [HttpPost("login")]
+        public IActionResult Login(string theUsername, string thePassword)
+        {
+            var user = Users.SingleOrDefault(u => u.Username == theUsername && u.Password == thePassword);
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid credentials.");
+            }
+            return Ok();
+        }
+      
 
     }
 }
